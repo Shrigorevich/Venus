@@ -43,7 +43,8 @@ public class ChallengeController(
     {
         try
         {
-            var createdChallenge = await challengeService.CreateChallenge(challenge);
+            var userId = "dfgadf"; //temp hardcoded
+            var createdChallenge = await challengeService.CreateChallenge(userId, challenge);
             return Ok(createdChallenge);
         }
         catch (Exception e)
