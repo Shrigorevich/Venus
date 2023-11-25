@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus", "Venus\Venus.csproj", "{9A811663-F014-4C1F-8FA4-6876ACBF1FC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Dto", "Venus.Dto\Venus.Dto.csproj", "{C3D6DC4D-ABD1-45B7-926A-DE9B26DC71B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Common", "Venus.Common\Venus.Common.csproj", "{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A811663-F014-4C1F-8FA4-6876ACBF1FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A811663-F014-4C1F-8FA4-6876ACBF1FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A811663-F014-4C1F-8FA4-6876ACBF1FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A811663-F014-4C1F-8FA4-6876ACBF1FC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3D6DC4D-ABD1-45B7-926A-DE9B26DC71B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3D6DC4D-ABD1-45B7-926A-DE9B26DC71B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3D6DC4D-ABD1-45B7-926A-DE9B26DC71B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3D6DC4D-ABD1-45B7-926A-DE9B26DC71B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
