@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Dto", "Venus.Dto\Venu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Common", "Venus.Common\Venus.Common.csproj", "{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Venus.Domain", "Venus.Domain\Venus.Domain.csproj", "{BC632811-BBD8-4DCC-863B-C3479FA2A89B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D8FB3C62-3B49-4B82-8B41-868B31E68FDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC632811-BBD8-4DCC-863B-C3479FA2A89B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC632811-BBD8-4DCC-863B-C3479FA2A89B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC632811-BBD8-4DCC-863B-C3479FA2A89B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC632811-BBD8-4DCC-863B-C3479FA2A89B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

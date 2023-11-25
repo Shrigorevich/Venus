@@ -1,48 +1,75 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Venus.Common;
+using Venus.Domain;
 using Venus.Dto;
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace Venus.Controllers
+namespace Venus.Controllers;
+
+[Route("api/challenges")]
+[ApiController]
+public class ChallengeController(
+    ILogger logger, 
+    IChallengeService challengeService) : ControllerBase
 {
-    [Route("api/challenges")]
-    [ApiController]
-    public class ChallengeController : ControllerBase
+    /// <summary>
+    /// Gets list of user`s challenges
+    /// </summary>
+    /// <remarks></remarks>
+    /// <returns>List of challenges</returns>
+    [HttpGet]
+    public async Task<ActionResult> GetChallenges()
     {
-        public ChallengeController()
+        try
         {
-            
+            var userId = "test_user"; // temporary hardcoded
+            var challenges = await challengeService.GetChallenges(userId);
+            return Ok(challenges);
         }
-
-        /// <summary>
-        /// Gets list of user`s challenges
-        /// </summary>
-        /// <returns>List of challenges</returns>
-        [HttpGet]
-        public async Task<ActionResult> GetChallenges()
+        catch (Exception e)
         {
-            return Ok();
+            logger.LogError("Something went wrong. Error: {0}", e);
+            return StatusCode(500);
         }
+    }
         
-        /// <summary>
-        /// Creates new challenge
-        /// </summary>
-        /// <returns>Created challenge</returns>
-        [HttpPost]
-        public async Task<ActionResult> CreateChallenge([FromBody]CreateChallengeDto challenge)
+    /// <summary>
+    /// Creates new challenge
+    /// </summary>
+    /// <remarks></remarks>
+    /// <returns>Created challenge</returns>
+    [HttpPost]
+    public async Task<ActionResult> CreateChallenge([FromBody]CreateChallengeDto challenge)
+    {
+        try
         {
+            var createdChallenge = await challengeService.CreateChallenge(challenge);
+            return Ok(createdChallenge);
+        }
+        catch (Exception e)
+        {
+            logger.LogError("Something went wrong. Error: {0}", e);
+            return StatusCode(500);
+        }
+    }
+        
+    /// <summary>
+    /// Updates challenge status
+    /// </summary>
+    /// <remarks></remarks>
+    /// <returns></returns>
+    [HttpPut("{id:Guid}")]
+    public async Task<ActionResult> UpdateChallenge(Guid id, [FromQuery] ChallengeStatus status)
+    {
+        try
+        {
+            await challengeService.UpdateChallengeStatus(id, status);
             return Ok();
         }
-        
-        /// <summary>
-        /// Updates challenge status
-        /// </summary>
-        /// <returns>List of challenges</returns>
-        [HttpPut("{id:Guid}")]
-        public async Task<ActionResult> CreateChallenge(Guid id, [FromQuery] ChallengeDayStatus status)
+        catch (Exception e)
         {
-            return Ok();
+            logger.LogError("Something went wrong. Error: {0}", e);
+            return StatusCode(500);
         }
     }
 }

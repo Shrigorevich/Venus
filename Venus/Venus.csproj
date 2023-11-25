@@ -14,10 +14,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
-    </ItemGroup>
-
-    <ItemGroup>
+      <ProjectReference Include="..\Venus.Domain\Venus.Domain.csproj" />
       <ProjectReference Include="..\Venus.Dto\Venus.Dto.csproj" />
     </ItemGroup>
 
