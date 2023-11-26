@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Venus.Database.Contracts\Venus.Database.Contracts.csproj" />
       <ProjectReference Include="..\Venus.Dto\Venus.Dto.csproj" />
     </ItemGroup>
 

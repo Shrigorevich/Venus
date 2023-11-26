@@ -9,7 +9,7 @@ namespace Venus.Controllers;
 [Route("api/challenges")]
 [ApiController]
 public class ChallengeController(
-    ILogger logger, 
+    ILogger<ChallengeController> logger, 
     IChallengeService challengeService) : ControllerBase
 {
     /// <summary>
@@ -22,7 +22,7 @@ public class ChallengeController(
     {
         try
         {
-            var userId = "test_user"; // temporary hardcoded
+            var userId = "test_user_1"; // temporary hardcoded
             var challenges = await challengeService.GetChallenges(userId);
             return Ok(challenges);
         }
