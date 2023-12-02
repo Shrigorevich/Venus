@@ -6,10 +6,17 @@ namespace Venus.Controllers;
 
 [Route("api/purchases")]
 [ApiController]
-public class PurchaseController(
-    ILogger logger, 
-    IPurchaseService purchaseService) : ControllerBase
+public class PurchaseController : ControllerBase
 {
+    private readonly IPurchaseService _purchaseService;
+    private ILogger<PurchaseController> _logger;
+
+    public PurchaseController(IPurchaseService purchaseService, ILogger<PurchaseController> logger)
+    {
+        _purchaseService = purchaseService;
+        _logger = logger;
+    }
+
     /// <summary>
     /// Gets list of user`s purchases
     /// </summary>
@@ -21,12 +28,12 @@ public class PurchaseController(
         try
         {
             var userId = "test_user"; // temporary hardcoded
-            var purchases = await purchaseService.GetPurchases(userId);
+            var purchases = await _purchaseService.GetPurchases(userId);
             return Ok(purchases);
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
@@ -42,12 +49,12 @@ public class PurchaseController(
         try
         {
             var userId = "dfgadf"; //temp hardcoded
-            var createdPurchase = await purchaseService.CreatePurchase(userId, purchase);
+            var createdPurchase = await _purchaseService.CreatePurchase(userId, purchase);
             return Ok(createdPurchase);
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }

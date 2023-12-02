@@ -8,10 +8,17 @@ namespace Venus.Controllers;
 
 [Route("api/challenges/days")]
 [ApiController]
-public class ChallengeDayController(
-    IChallengeDayService challengeDayService,
-    ILogger logger) : ControllerBase
+public class ChallengeDayController : ControllerBase
 {
+    private readonly IChallengeDayService _challengeDayService;
+    private ILogger<ChallengeDayController> _logger;
+
+    public ChallengeDayController(IChallengeDayService challengeDayService, ILogger<ChallengeDayController> logger)
+    {
+        _challengeDayService = challengeDayService;
+        _logger = logger;
+    }
+
     /// <summary>
     /// Creates challenge day
     /// </summary>
@@ -22,12 +29,12 @@ public class ChallengeDayController(
     {
         try
         {
-            var day = await challengeDayService.CreateChallengeDay(challengeDay);
+            var day = await _challengeDayService.CreateChallengeDay(challengeDay);
             return Ok(day);
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
@@ -42,12 +49,12 @@ public class ChallengeDayController(
     {
         try
         {
-            await challengeDayService.UpdateDayStatus(id, status);
+            await _challengeDayService.UpdateDayStatus(id, status);
             return Ok();
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }

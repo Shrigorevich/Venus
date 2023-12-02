@@ -1,3 +1,4 @@
+using Venus.Authorization;
 using Venus.Database;
 using Venus.Database.Contracts;
 using Venus.Domain;
@@ -6,6 +7,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSingleton(new KratosService());   
+builder.Services
+    .AddAuthentication("Kratos")
+    .AddScheme<KratosAuthenticationOptions, KratosAuthHandler>("Kratos", null);
+
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IChallengeService, ChallengeService>();
 builder.Services.AddSingleton<IChallengeRepo, ChallengeRepo>();

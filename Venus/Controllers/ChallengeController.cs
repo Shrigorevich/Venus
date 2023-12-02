@@ -1,17 +1,25 @@
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Venus.Common;
 using Venus.Domain;
 using Venus.Dto;
-using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Venus.Controllers;
 
 [Route("api/challenges")]
 [ApiController]
-public class ChallengeController(
-    ILogger<ChallengeController> logger, 
-    IChallengeService challengeService) : ControllerBase
+public class ChallengeController : ControllerBase
 {
+    private readonly ILogger<ChallengeController> _logger;
+    private readonly IChallengeService _challengeService;
+    public ChallengeController(
+        ILogger<ChallengeController> logger,
+        IChallengeService challengeService)
+    {
+        _logger = logger;
+        _challengeService = challengeService;
+    }
     /// <summary>
     /// Gets list of user`s challenges
     /// </summary>
@@ -22,13 +30,15 @@ public class ChallengeController(
     {
         try
         {
-            var userId = "test_user_1"; // temporary hardcoded
-            var challenges = await challengeService.GetChallenges(userId);
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            
+            var challenges = await _challengeService.GetChallenges(userId);
             return Ok(challenges);
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
@@ -44,12 +54,12 @@ public class ChallengeController(
         try
         {
             var userId = "dfgadf"; //temp hardcoded
-            var createdChallenge = await challengeService.CreateChallenge(userId, challenge);
+            var createdChallenge = await _challengeService.CreateChallenge(userId, challenge);
             return Ok(createdChallenge);
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
@@ -64,12 +74,12 @@ public class ChallengeController(
     {
         try
         {
-            await challengeService.UpdateChallengeStatus(id, status);
+            await _challengeService.UpdateChallengeStatus(id, status);
             return Ok();
         }
         catch (Exception e)
         {
-            logger.LogError("Something went wrong. Error: {0}", e);
+            _logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
