@@ -12,7 +12,7 @@ public class KratosAuthenticationOptions : AuthenticationSchemeOptions
 
 public class KratosAuthHandler : AuthenticationHandler<KratosAuthenticationOptions>
 {
-    private readonly string _sessionCookieName = "ory_session_excitingkhayyamx54of2xlum";
+    private readonly string _sessionCookieName = "ory_kratos_session";
     private readonly KratosService _kratosService;
 
     public KratosAuthHandler(

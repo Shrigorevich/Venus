@@ -6,7 +6,7 @@ namespace Venus.Database.Contracts;
 
 public interface IChallengeRepo
 {
-    Task<List<ChallengeModel>> GetChallenges(string userId);
+    Task<IEnumerable<ChallengeModel>> GetChallenges(string userId);
     
     Task<ChallengeModel> CreateChallenge(string userId, CreateChallengeDto challenge);
 

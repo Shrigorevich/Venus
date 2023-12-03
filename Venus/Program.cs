@@ -5,6 +5,19 @@ using Venus.Domain;
 
 var builder = WebApplication.CreateBuilder(args);
 
+const string origins = "customAllowedOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: origins,
+        policy  =>
+        {
+            policy.WithOrigins(
+                "http://127.0.0.1:3000"
+            ).AllowCredentials();
+        });
+});
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSingleton(new KratosService());   
@@ -25,9 +38,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors(origins);
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

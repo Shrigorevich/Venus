@@ -14,13 +14,13 @@ public class ChallengeRepo : BaseRepository, IChallengeRepo
     {
     }
 
-    public async Task<List<ChallengeModel>> GetChallenges(string userId)
+    public async Task<IEnumerable<ChallengeModel>> GetChallenges(string userId)
     {
         await using var conn = Connection();
         var sql = $"SELECT * from get_challenges('{userId}')";
         
         var result = await conn.QueryAsync<ChallengeModel>(sql);
-        return new List<ChallengeModel>();
+        return result;
     }
 
     public async Task UpdateChallengeStatus(Guid challengeId, ChallengeStatus status)

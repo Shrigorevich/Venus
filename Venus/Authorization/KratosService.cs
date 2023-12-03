@@ -10,7 +10,7 @@ public class KratosService
     public KratosService()
     {
         _client = new HttpClient();
-        _kratosUrl = "http://localhost:4000";
+        _kratosUrl = "http://127.0.0.1:4433";
     }
 
     public async Task<string> GetUserIdByToken(string token)
