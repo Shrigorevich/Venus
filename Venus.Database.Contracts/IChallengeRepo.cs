@@ -8,7 +8,7 @@ public interface IChallengeRepo
 {
     Task<IEnumerable<ChallengeModel>> GetChallenges(string userId);
     
-    Task<ChallengeModel> CreateChallenge(string userId, CreateChallengeDto challenge);
+    Task<Guid> CreateChallenge(string userId, CreateChallengeDto challenge);
 
     Task UpdateChallengeStatus(Guid challengeId, ChallengeStatus status);
 }
