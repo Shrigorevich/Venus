@@ -25,11 +25,11 @@ public class ChallengeDayController : ControllerBase
     /// <remarks></remarks>
     /// <returns>Created challenge day</returns>
     [HttpPost]
-    public async Task<ActionResult> CreateChallengeDay([FromBody] ChallengeDayDto challengeDay)
+    public async Task<ActionResult> CreateChallengeDay([FromBody] CreateChallengeDayDto createChallengeDay)
     {
         try
         {
-            var day = await _challengeDayService.CreateChallengeDay(challengeDay);
+            var day = await _challengeDayService.CreateChallengeDay(createChallengeDay);
             return Ok(day);
         }
         catch (Exception e)

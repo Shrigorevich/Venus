@@ -6,7 +6,7 @@ namespace Venus.Database.Contracts;
 
 public interface IChallengeDayRepo
 {
-    Task CreateChallengeDay(ChallengeDayDto day);
+    Task CreateChallengeDay(CreateChallengeDayDto day);
 
     Task UpdateDayStatus(Guid dayId, ChallengeDayStatus status);
 }

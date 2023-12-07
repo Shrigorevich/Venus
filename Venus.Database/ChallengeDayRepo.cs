@@ -12,7 +12,7 @@ public class ChallengeDayRepo : BaseRepository, IChallengeDayRepo
     {
     }
     
-    public async Task CreateChallengeDay(ChallengeDayDto day)
+    public async Task CreateChallengeDay(CreateChallengeDayDto day)
     {
         await using var conn = Connection();
         var sql = $"SELECT * FROM add_challenge_day('{day.ChallengeId}', {day.Status}, '{day.Date}')";

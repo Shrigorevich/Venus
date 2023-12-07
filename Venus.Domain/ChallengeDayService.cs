@@ -5,7 +5,7 @@ namespace Venus.Domain;
 
 public class ChallengeDayService : IChallengeDayService
 {
-    public Task<ChallengeDayDto> CreateChallengeDay(ChallengeDayDto day)
+    public Task<CreateChallengeDayDto> CreateChallengeDay(CreateChallengeDayDto day)
     {
         throw new NotImplementedException();
     }
