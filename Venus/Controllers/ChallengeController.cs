@@ -53,7 +53,9 @@ public class ChallengeController : ControllerBase
     {
         try
         {
-            var userId = "dfgadf"; //temp hardcoded
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            
             var createdChallenge = await _challengeService.CreateChallenge(userId, challenge);
             return Ok(createdChallenge);
         }

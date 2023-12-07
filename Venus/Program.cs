@@ -1,7 +1,9 @@
+using AutoMapper;
 using Venus.Authorization;
 using Venus.Database;
 using Venus.Database.Contracts;
 using Venus.Domain;
+using Venus.Domain.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,16 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSingleton(new KratosService());   
+builder.Services.AddSingleton<IChallengeService, ChallengeService>();
+builder.Services.AddSingleton<IChallengeDayService, ChallengeDayService>();
+builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
+
+
+builder.Services.AddAutoMapper(
+    typeof(ChallengeProfile)
+);
+
+builder.Services.AddSingleton<KratosService>();
 builder.Services
     .AddAuthentication("Kratos")
     .AddScheme<KratosAuthenticationOptions, KratosAuthHandler>("Kratos", null);

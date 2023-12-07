@@ -8,6 +8,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="12.0.1" />
+        <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0" />
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -15,6 +17,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Venus.Database\Venus.Database.csproj" />
+      <ProjectReference Include="..\Venus.Domain.Mapping\Venus.Domain.Mapping.csproj" />
       <ProjectReference Include="..\Venus.Domain\Venus.Domain.csproj" />
       <ProjectReference Include="..\Venus.Dto\Venus.Dto.csproj" />
     </ItemGroup>
