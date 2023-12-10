@@ -14,5 +14,7 @@ public class ChallengeProfile : Profile
             .ForMember(
                 dest => dest.Days,
                 opt => opt.MapFrom(x => JsonConvert.DeserializeObject<List<ChallengeDayDto>>(x.Days)));
+
+        CreateMap<ChallengeDayModel, ChallengeDayDto>();
     }
 }
