@@ -2,6 +2,7 @@ using Dapper;
 using Microsoft.Extensions.Configuration;
 using Venus.Common;
 using Venus.Database.Contracts;
+using Venus.Database.Models;
 using Venus.Dto;
 
 namespace Venus.Database;
@@ -12,11 +13,12 @@ public class ChallengeDayRepo : BaseRepository, IChallengeDayRepo
     {
     }
     
-    public async Task CreateChallengeDay(CreateChallengeDayDto day)
+    public async Task<ChallengeDayModel> CreateChallengeDay(CreateChallengeDayDto day)
     {
         await using var conn = Connection();
         var sql = $"SELECT * FROM add_challenge_day('{day.ChallengeId}', {day.Status}, '{day.Date}')";
-        await conn.ExecuteAsync(sql);
+        var challengeDay = await conn.QuerySingleAsync<ChallengeDayModel>(sql);
+        return challengeDay;
     }
 
     public async Task UpdateDayStatus(Guid dayId, ChallengeDayStatus status)

@@ -5,7 +5,7 @@ namespace Venus.Domain;
 
 public interface IChallengeDayService
 {
-    Task<CreateChallengeDayDto> CreateChallengeDay(CreateChallengeDayDto day);
+    Task<ChallengeDayDto> CreateChallengeDay(CreateChallengeDayDto day);
 
     Task UpdateDayStatus(Guid dayId, ChallengeDayStatus status);
 }

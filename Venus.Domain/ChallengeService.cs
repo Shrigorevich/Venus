@@ -23,13 +23,14 @@ public class ChallengeService : IChallengeService
         return _mapper.Map<List<ChallengeModel>, List<ChallengeDto>>(challenges);
     }
 
-    public async Task<ChallengeDto> CreateChallenge(string userId, CreateChallengeDto challenge)
+    public async Task<Guid> CreateChallenge(string userId, CreateChallengeDto challenge)
     {
-        throw new NotImplementedException();
+        var id = await _challengeRepo.CreateChallenge(userId, challenge);
+        return id;
     }
 
     public async Task UpdateChallengeStatus(Guid challengeId, ChallengeStatus status)
     {
-        throw new NotImplementedException();
+        await _challengeRepo.UpdateChallengeStatus(challengeId, status);
     }
 }
