@@ -15,8 +15,11 @@ public class ChallengeDayRepo : BaseRepository, IChallengeDayRepo
     
     public async Task<ChallengeDayModel> CreateChallengeDay(CreateChallengeDayDto day)
     {
+        var time = TimeSpan.FromMilliseconds(day.Date);
+        var date = new DateTime(1970, 1, 1) + time;
+        
         await using var conn = Connection();
-        var sql = $"SELECT * FROM add_challenge_day('{day.ChallengeId}', {day.Status}, '{day.Date}')";
+        var sql = $"SELECT * FROM add_challenge_day('{day.ChallengeId}', {(int)day.Status}, '{date}')";
         var challengeDay = await conn.QuerySingleAsync<ChallengeDayModel>(sql);
         return challengeDay;
     }
