@@ -31,9 +31,20 @@ public class ChallengeRepo : BaseRepository, IChallengeRepo
 
     public async Task<Guid> CreateChallenge(string userId, CreateChallengeDto challenge)
     {
+        
         await using var conn = Connection();
-        var sql = string.Format("SELECT * from create_challenge('{0}', '{1}', '{2}', '{3}', '{4}')", 
-            userId, challenge.Name, challenge.Description, challenge.StartDate, challenge.EndDate);
+        string sql;
+        
+        if (string.IsNullOrEmpty(challenge.EndDate))
+        {
+            sql = string.Format("SELECT * from create_challenge('{0}', '{1}', '{2}', '{3}')", 
+                userId, challenge.Name, challenge.Description, challenge.StartDate);
+        }
+        else
+        {
+            sql = string.Format("SELECT * from create_challenge('{0}', '{1}', '{2}', '{3}', '{4}')", 
+                userId, challenge.Name, challenge.Description, challenge.StartDate, challenge.EndDate);
+        }
         
         var result = await conn.QuerySingleAsync<Guid>(sql);
         return result;

@@ -25,11 +25,18 @@ public class ChallengeDayController : ControllerBase
     /// <remarks></remarks>
     /// <returns>Created challenge day</returns>
     [HttpPost]
-    public async Task<ActionResult> CreateChallengeDay([FromBody] CreateChallengeDayDto createChallengeDay)
+    public async Task<ActionResult> CreateChallengeDay([FromBody] CreateChallengeDayDto challengeDay)
     {
         try
         {
-            var day = await _challengeDayService.CreateChallengeDay(createChallengeDay);
+            var isDateValid = DateTime.TryParse(challengeDay.Date, out var date);
+            
+            if (!isDateValid)
+            {
+                return BadRequest("Wrong date format. Please use ISO format (2023-10-05T14:48:00.000Z)");
+            }
+            
+            var day = await _challengeDayService.CreateChallengeDay(challengeDay);
             return Ok(day);
         }
         catch (Exception e)

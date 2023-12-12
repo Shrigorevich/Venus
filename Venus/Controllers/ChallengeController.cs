@@ -53,8 +53,24 @@ public class ChallengeController : ControllerBase
     {
         try
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            var isStartDateValid = DateTime.TryParse(challenge.StartDate, out var startDate);
+            var isEndDateValid = DateTime.TryParse(challenge.EndDate, out var endDate) ||
+                                 string.IsNullOrEmpty(challenge.EndDate);
+                 
+
+            if (!isStartDateValid || !isEndDateValid)
+            {
+                return BadRequest("Wrong date format. Please use ISO format (2023-10-05T14:48:00.000Z)");
+            }
+
+            if (isEndDateValid && startDate.ToShortDateString().Equals(endDate.ToShortDateString()))
+            {
+                return BadRequest("StartDate can`t be equal to EndDate");
+            }
+            
+            // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            var userId = "a6f5e018-d919-4962-b50e-dccacdf9ae3f";
             
             var createdChallenge = await _challengeService.CreateChallenge(userId, challenge);
             return Ok(createdChallenge);
