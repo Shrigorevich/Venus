@@ -48,7 +48,7 @@ public class PurchaseController : ControllerBase
     {
         try
         {
-            var userId = "dfgadf"; //temp hardcoded
+            var userId = "test_user"; //temp hardcoded
             var createdPurchase = await _purchaseService.CreatePurchase(userId, purchase);
             return Ok(createdPurchase);
         }

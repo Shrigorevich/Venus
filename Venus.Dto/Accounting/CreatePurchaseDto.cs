@@ -15,38 +15,38 @@ public class CreatePurchaseDto
     /// Purchase description
     /// </summary>
     /// <example>Good purchase</example>
-    public string Description { get; set; }
+    public string? Description { get; set; }
     
     /// <summary>
     /// Price
     /// </summary>
     public decimal Price { get; set; }
-    
+
     /// <summary>
     /// Discount amount
     /// </summary>
-    public decimal Discount { get; set; }
-    
+    public decimal Discount { get; set; } = 0;
+
     /// <summary>
     /// Item quantity
     /// </summary>
-    public decimal Quantity { get; set; }
+    public decimal Quantity { get; set; } = 0;
     
     /// <summary>
     /// Unit measurement (kg, g, L, etc.)
     /// </summary>
     /// <example>L</example>
-    public string Unit { get; set; }
+    public string? Unit { get; set; }
     
     /// <summary>
     /// Currency code (USD, UAH, EUR etc.)
     /// </summary>
     /// <example>UAH</example>
     public string Currency { get; set; }
-    
+
     /// <summary>
     /// Ids of tags attached to this purchase
     /// </summary>
     /// <example>[1, 4, 7]</example>
-    public int[] TagIds { get; set; }
+    public int[]? TagIds { get; set; } = Array.Empty<int>();
 }

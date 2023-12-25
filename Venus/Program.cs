@@ -39,8 +39,10 @@ builder.Services
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<IChallengeService, ChallengeService>();
 builder.Services.AddSingleton<IChallengeDayService, ChallengeDayService>();
+builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
 builder.Services.AddSingleton<IChallengeRepo, ChallengeRepo>();
 builder.Services.AddSingleton<IChallengeDayRepo, ChallengeDayRepo>();
+builder.Services.AddSingleton<IPurchaseRepo, PurchaseRepo>();
 
 var app = builder.Build();
 

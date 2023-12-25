@@ -14,7 +14,22 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
 
     public async Task<PurchaseModel> CreatePurchase(string userId, CreatePurchaseDto purchase)
     {
-        throw new NotImplementedException();
+        await using var conn = Connection();
+        string sql;
+        
+        sql = string.Format("SELECT * from create_challenge({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", 
+            $"'{userId}'", 
+            $"'{purchase.Name}'", 
+            $"{purchase.Price}", 
+            string.IsNullOrEmpty(purchase.Currency) ? "null" : $"'{purchase.Currency}'",
+            $"{purchase.TagIds}",
+            $"{purchase.Discount}",
+            string.IsNullOrEmpty(purchase.Unit) ? "null" : $"'{purchase.Unit}'",
+            purchase.Quantity,
+            string.IsNullOrEmpty(purchase.Description) ? "null" : $"'{purchase.Description}'");
+        
+        var result = await conn.QuerySingleAsync<PurchaseModel>(sql);
+        return result;
     }
 
     public async Task<List<PurchaseModel>> GetPurchases(string userId)
