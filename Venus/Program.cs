@@ -1,4 +1,3 @@
-using AutoMapper;
 using Venus.Authorization;
 using Venus.Database;
 using Venus.Database.Contracts;
@@ -6,6 +5,8 @@ using Venus.Domain;
 using Venus.Domain.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Configuration.AddEnvironmentVariables(prefix: "VenusEnv_");
 
 const string origins = "customAllowedOrigins";
 
