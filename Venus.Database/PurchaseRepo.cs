@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
 using Microsoft.Extensions.Configuration;
 using Venus.Database.Contracts;
 using Venus.Database.Models;
@@ -15,20 +16,22 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
     public async Task<PurchaseModel> CreatePurchase(string userId, CreatePurchaseDto purchase)
     {
         await using var conn = Connection();
-        string sql;
+
+        const string sql = "SELECT * from create_purchase(@user_id, @name, @price, @currency, @tag_ids, @discount, @unit, @quantity, @description)";
         
-        sql = string.Format("SELECT * from create_challenge({0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}, {8})", 
-            $"'{userId}'", 
-            $"'{purchase.Name}'", 
-            $"{purchase.Price}", 
-            string.IsNullOrEmpty(purchase.Currency) ? "null" : $"'{purchase.Currency}'",
-            $"{purchase.TagIds}",
-            $"{purchase.Discount}",
-            string.IsNullOrEmpty(purchase.Unit) ? "null" : $"'{purchase.Unit}'",
-            purchase.Quantity,
-            string.IsNullOrEmpty(purchase.Description) ? "null" : $"'{purchase.Description}'");
+        var parameter = new DynamicParameters();
+        parameter.Add("@user_id", userId, DbType.StringFixedLength);
+        parameter.Add("@name", purchase.Name, DbType.StringFixedLength);
+        parameter.Add("@price", purchase.Price, DbType.Decimal);
+        parameter.Add("@currency", purchase.Currency, DbType.StringFixedLength);
+        parameter.Add("@tag_ids", purchase.TagIds, DbType.Object);
+        parameter.Add("@discount", purchase.Discount, DbType.Decimal);
+        parameter.Add("@unit", purchase.Unit, DbType.StringFixedLength);
+        parameter.Add("@quantity", purchase.Quantity, DbType.Decimal);
+        parameter.Add("@description", purchase.Description, DbType.StringFixedLength);
+
+        var result = await conn.QuerySingleAsync<PurchaseModel>(sql, parameter);
         
-        var result = await conn.QuerySingleAsync<PurchaseModel>(sql);
         return result;
     }
 

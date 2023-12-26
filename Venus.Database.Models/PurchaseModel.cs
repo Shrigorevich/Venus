@@ -9,6 +9,6 @@ public class PurchaseModel
     public decimal Discount { get; set; }
     public string Unit { get; set; }
     public decimal Quantity { get; set; }
-    public string TagsJson { get; set; }
     public string Currency { get; set; }
+    public string Tags { get; set; }
 }
