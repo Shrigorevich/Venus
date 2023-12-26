@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Configuration.AddEnvironmentVariables(prefix: "VenusEnv_");
 
+Console.WriteLine("Connection string: " + builder.Configuration.GetConnectionString("Default"));
 const string origins = "customAllowedOrigins";
 
 builder.Services.AddCors(options =>

@@ -13,7 +13,9 @@ public class PurchaseController : ControllerBase
     private readonly IPurchaseService _purchaseService;
     private ILogger<PurchaseController> _logger;
 
-    public PurchaseController(IPurchaseService purchaseService, ILogger<PurchaseController> logger)
+    public PurchaseController(
+        IPurchaseService purchaseService, 
+        ILogger<PurchaseController> logger)
     {
         _purchaseService = purchaseService;
         _logger = logger;
@@ -86,6 +88,29 @@ public class PurchaseController : ControllerBase
             
             await _purchaseService.AddPurchaseTag(id, tagId);
             return Ok();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Something went wrong. Error: {0}", e);
+            return StatusCode(500, new ErrorObject
+            {
+                Message = e.Message
+            });
+        }
+    }
+    
+    /// <summary>
+    /// Creates new purchase 
+    /// </summary>
+    /// <remarks></remarks>
+    /// <returns>Add</returns>
+    [HttpPut("dummy")]
+    public async Task<ActionResult> Dummy([FromQuery] string userId)
+    {
+        try
+        {
+            var res = await _purchaseService.GetPurchases(userId);
+            return Ok(res);
         }
         catch (Exception e)
         {
