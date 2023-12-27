@@ -4,9 +4,13 @@ namespace Venus.Domain;
 
 public interface IPurchaseService
 {
-    Task<PurchaseDto> CreatePurchase(string userId, CreatePurchaseDto purchase);
+    Task<PurchaseViewDto> CreatePurchase(string userId, CreatePurchaseDto purchase);
+    
+    Task<PurchaseViewDto> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase);
+    
+    Task<List<PurchaseViewDto>> GetPurchases(string userId);
+    
+    Task DeletePurchase(string userId, Guid purchaseId);
 
-    Task<List<PurchaseDto>> GetPurchases(string userId);
-
-    Task AddPurchaseTag(Guid purchaseId, int tagId);
+    Task UpdatePurchaseTags(Guid purchaseId, int[] tagIds);
 }

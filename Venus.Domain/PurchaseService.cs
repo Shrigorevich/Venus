@@ -16,20 +16,31 @@ public class PurchaseService : IPurchaseService
         _purchaseRepo = purchaseRepo;
     }
 
-    public async Task<PurchaseDto> CreatePurchase(string userId, CreatePurchaseDto purchase)
+    public async Task<PurchaseViewDto> CreatePurchase(string userId, CreatePurchaseDto purchase)
     {
         var model = await _purchaseRepo.CreatePurchase(userId, purchase);
-        return _mapper.Map<PurchaseModel, PurchaseDto>(model);
+        return _mapper.Map<PurchaseModel, PurchaseViewDto>(model);
     }
 
-    public async Task<List<PurchaseDto>> GetPurchases(string userId)
+    public async Task<PurchaseViewDto> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase)
+    {
+        var model = await _purchaseRepo.UpdatePurchase(userId, purchaseId, purchase);
+        return _mapper.Map<PurchaseModel, PurchaseViewDto>(model);
+    }
+
+    public async Task<List<PurchaseViewDto>> GetPurchases(string userId)
     {
         var models = await _purchaseRepo.GetPurchases(userId);
-        return _mapper.Map<List<PurchaseModel>, List<PurchaseDto>>(models);
+        return _mapper.Map<List<PurchaseModel>, List<PurchaseViewDto>>(models);
     }
 
-    public async Task AddPurchaseTag(Guid purchaseId, int tagId)
+    public async Task DeletePurchase(string userId, Guid purchaseId)
     {
-        await _purchaseRepo.AddPurchaseTag(purchaseId, tagId);
+        await _purchaseRepo.DeletePurchase(userId, purchaseId);
+    }
+
+    public async Task UpdatePurchaseTags(Guid purchaseId, int[] tagIds)
+    {
+        await _purchaseRepo.UpdatePurchaseTags(purchaseId, tagIds);
     }
 }

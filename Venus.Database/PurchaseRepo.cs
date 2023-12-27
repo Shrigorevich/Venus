@@ -35,6 +35,28 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
         return result;
     }
 
+    public async Task<PurchaseModel> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase)
+    {
+        await using var conn = Connection();
+
+        const string sql = "SELECT * from update_purchase(@userId, @purchaseId, @name, @price, @currency, @discount, @unit, @quantity, @description)";
+        
+        var parameter = new DynamicParameters();
+        parameter.Add("@userId", userId, DbType.StringFixedLength);
+        parameter.Add("@purchaseId", purchaseId, DbType.Guid);
+        parameter.Add("@name", purchase.Name, DbType.StringFixedLength);
+        parameter.Add("@price", purchase.Price, DbType.Decimal);
+        parameter.Add("@currency", purchase.Currency, DbType.StringFixedLength);
+        parameter.Add("@discount", purchase.Discount, DbType.Decimal);
+        parameter.Add("@unit", purchase.Unit, DbType.StringFixedLength);
+        parameter.Add("@quantity", purchase.Quantity, DbType.Decimal);
+        parameter.Add("@description", purchase.Description, DbType.StringFixedLength);
+
+        var result = await conn.QuerySingleAsync<PurchaseModel>(sql, parameter);
+        
+        return result;
+    }
+
     public async Task<List<PurchaseModel>> GetPurchases(string userId)
     {
         await using var conn = Connection();
@@ -44,10 +66,28 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
         return result.ToList();
     }
 
-    public async Task AddPurchaseTag(Guid purchaseId, int tagId)
+    public async Task DeletePurchase(string userId, Guid purchaseId)
     {
         await using var conn = Connection();
-        var sql = $"INSERT INTO purchase_tag (purchase_id, tag_id) VALUES ('{purchaseId}', {tagId})";
-        await conn.ExecuteAsync(sql);
+        const string sql = $"DELETE FROM purchase WHERE user_id = @userId and id = @purchaseId";
+        
+        var parameter = new DynamicParameters();
+        parameter.Add("@purchaseId", purchaseId, DbType.Guid);
+        parameter.Add("@userId", userId, DbType.String);
+        
+        await conn.ExecuteAsync(sql, parameter);
+    }
+
+    public async Task UpdatePurchaseTags(Guid purchaseId, int[] tagIds)
+    {
+        await using var conn = Connection();
+
+        const string sql = "SELECT * from update_purchase_tags(@purchaseId, @tagIds)";
+        
+        var parameter = new DynamicParameters();
+        parameter.Add("@purchaseId", purchaseId, DbType.Guid);
+        parameter.Add("@tagIds", tagIds, DbType.Object);
+
+        await conn.ExecuteAsync(sql, parameter);
     }
 }

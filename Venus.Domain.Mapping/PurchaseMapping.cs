@@ -9,7 +9,7 @@ public class PurchaseProfile : Profile
 {
     public PurchaseProfile()
     {
-        CreateMap<PurchaseModel, PurchaseDto>()
+        CreateMap<PurchaseModel, PurchaseViewDto>()
             .ForMember(
                 dest => dest.Tags,
                 opt => opt.MapFrom(x => JsonConvert.DeserializeObject<List<PurchaseTagDto>>(x.Tags)));

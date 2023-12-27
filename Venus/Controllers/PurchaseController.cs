@@ -11,7 +11,7 @@ namespace Venus.Controllers;
 public class PurchaseController : ControllerBase
 {
     private readonly IPurchaseService _purchaseService;
-    private ILogger<PurchaseController> _logger;
+    private readonly ILogger<PurchaseController> _logger;
 
     public PurchaseController(
         IPurchaseService purchaseService, 
@@ -35,6 +35,32 @@ public class PurchaseController : ControllerBase
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
             var createdPurchase = await _purchaseService.CreatePurchase(userId, purchase);
+            return Ok(createdPurchase);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Something went wrong. Error: {0}", e);
+            return StatusCode(500, new ErrorObject
+            {
+                Message = e.Message
+            });
+        }
+    }
+    
+    /// <summary>
+    /// Updates purchase 
+    /// </summary>
+    /// <remarks></remarks>
+    /// <returns>Updated purchase</returns>
+    [HttpPut("{id:Guid}")]
+    public async Task<ActionResult> UpdatePurchase(Guid id, [FromBody]PurchaseDto purchase)
+    {
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            userId = "test_user";
+            var createdPurchase = await _purchaseService.UpdatePurchase(userId, id, purchase);
             return Ok(createdPurchase);
         }
         catch (Exception e)
@@ -72,21 +98,21 @@ public class PurchaseController : ControllerBase
             });
         }
     }
-        
+    
     /// <summary>
-    /// Creates new purchase 
+    /// Delete purchase
     /// </summary>
     /// <remarks></remarks>
-    /// <returns>Add</returns>
-    [HttpPut("{id:Guid}/tags")]
-    public async Task<ActionResult> AddPurchaseTag([FromQuery] int tagId, Guid id)
+    /// <returns></returns>
+    [HttpDelete("{id:Guid}")]
+    public async Task<ActionResult> DeletePurchase(Guid id)
     {
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            
-            await _purchaseService.AddPurchaseTag(id, tagId);
+            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            userId = "test_user";
+            await _purchaseService.DeletePurchase(userId, id);
             return Ok();
         }
         catch (Exception e)
@@ -100,10 +126,36 @@ public class PurchaseController : ControllerBase
     }
     
     /// <summary>
-    /// Creates new purchase 
+    /// Delete purchase
     /// </summary>
     /// <remarks></remarks>
     /// <returns>Add</returns>
+    [HttpPut("{id:Guid}/tags")]
+    public async Task<ActionResult> UpdatePurchaseTags(Guid id, [FromBody] int[] tagIds)
+    {
+        try
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            
+            await _purchaseService.UpdatePurchaseTags(id, tagIds);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Something went wrong. Error: {0}", e);
+            return StatusCode(500, new ErrorObject
+            {
+                Message = e.Message
+            });
+        }
+    }
+    
+    /// <summary>
+    /// Dummy API
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns></returns>
     [HttpPut("dummy")]
     public async Task<ActionResult> Dummy([FromQuery] string userId)
     {
