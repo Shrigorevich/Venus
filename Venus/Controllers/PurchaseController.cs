@@ -31,9 +31,13 @@ public class PurchaseController : ControllerBase
     {
         try
         {
-            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            var isDateValid = DateOnly.TryParse(purchase.Date, out var date);
+            if (!isDateValid)
+                return BadRequest("Wrong date format. Please use ISO format (2023-10-05T14:48:00.000Z)");
             
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
+            userId = "test_user";
             var createdPurchase = await _purchaseService.CreatePurchase(userId, purchase);
             return Ok(createdPurchase);
         }
@@ -110,8 +114,8 @@ public class PurchaseController : ControllerBase
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            userId = "test_user";
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
             await _purchaseService.DeletePurchase(userId, id);
             return Ok();
         }
@@ -136,8 +140,8 @@ public class PurchaseController : ControllerBase
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
             await _purchaseService.UpdatePurchaseTags(id, tagIds);
             return Ok();
         }
