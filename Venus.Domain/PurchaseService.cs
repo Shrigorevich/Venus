@@ -22,7 +22,7 @@ public class PurchaseService : IPurchaseService
         return _mapper.Map<PurchaseModel, PurchaseViewDto>(model);
     }
 
-    public async Task<PurchaseViewDto> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase)
+    public async Task<PurchaseViewDto> UpdatePurchase(string userId, Guid purchaseId, UpdatePurchaseDto purchase)
     {
         var model = await _purchaseRepo.UpdatePurchase(userId, purchaseId, purchase);
         return _mapper.Map<PurchaseModel, PurchaseViewDto>(model);

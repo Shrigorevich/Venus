@@ -53,7 +53,7 @@ public class PurchaseController : ControllerBase
     /// <remarks></remarks>
     /// <returns>Updated purchase</returns>
     [HttpPut("{id:Guid}")]
-    public async Task<ActionResult> UpdatePurchase(Guid id, [FromBody]PurchaseDto purchase)
+    public async Task<ActionResult> UpdatePurchase(Guid id, [FromBody]UpdatePurchaseDto purchase)
     {
         try
         {

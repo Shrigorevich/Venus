@@ -6,7 +6,7 @@ public interface IPurchaseService
 {
     Task<PurchaseViewDto> CreatePurchase(string userId, CreatePurchaseDto purchase);
     
-    Task<PurchaseViewDto> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase);
+    Task<PurchaseViewDto> UpdatePurchase(string userId, Guid purchaseId, UpdatePurchaseDto purchase);
     
     Task<List<PurchaseViewDto>> GetPurchases(string userId);
     

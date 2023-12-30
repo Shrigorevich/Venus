@@ -17,10 +17,11 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
     {
         await using var conn = Connection();
 
-        const string sql = "SELECT * from create_purchase(@user_id, @name, @price, @currency, @tag_ids, @discount, @unit, @quantity, @description)";
+        const string sql = "SELECT * from create_purchase(@user_id, @date, @name, @price, @currency, @tag_ids, @discount, @unit, @quantity, @description)";
         
         var parameter = new DynamicParameters();
         parameter.Add("@user_id", userId, DbType.StringFixedLength);
+        parameter.Add("@date", purchase.Date, DbType.Date);
         parameter.Add("@name", purchase.Name, DbType.StringFixedLength);
         parameter.Add("@price", purchase.Price, DbType.Decimal);
         parameter.Add("@currency", purchase.Currency, DbType.StringFixedLength);
@@ -35,14 +36,15 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
         return result;
     }
 
-    public async Task<PurchaseModel> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase)
+    public async Task<PurchaseModel> UpdatePurchase(string userId, Guid purchaseId, UpdatePurchaseDto purchase)
     {
         await using var conn = Connection();
 
-        const string sql = "SELECT * from update_purchase(@userId, @purchaseId, @name, @price, @currency, @discount, @unit, @quantity, @description)";
+        const string sql = "SELECT * from update_purchase(@userId, @date, @purchaseId, @name, @price, @currency, @discount, @unit, @quantity, @description)";
         
         var parameter = new DynamicParameters();
         parameter.Add("@userId", userId, DbType.StringFixedLength);
+        parameter.Add("@date", purchase.Date, DbType.Date);
         parameter.Add("@purchaseId", purchaseId, DbType.Guid);
         parameter.Add("@name", purchase.Name, DbType.StringFixedLength);
         parameter.Add("@price", purchase.Price, DbType.Decimal);

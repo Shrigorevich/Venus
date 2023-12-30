@@ -7,7 +7,7 @@ public interface IPurchaseRepo
 {
     Task<PurchaseModel> CreatePurchase(string userId, CreatePurchaseDto purchase);
 
-    Task<PurchaseModel> UpdatePurchase(string userId, Guid purchaseId, PurchaseDto purchase);
+    Task<PurchaseModel> UpdatePurchase(string userId, Guid purchaseId, UpdatePurchaseDto purchase);
 
     Task<List<PurchaseModel>> GetPurchases(string userId);
 
