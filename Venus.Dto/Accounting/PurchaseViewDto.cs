@@ -18,5 +18,5 @@ public class PurchaseViewDto : PurchaseDto
     /// List of tags attached to this purchase
     /// </summary>
     /// <example>[1, 4, 7]</example>
-    public List<PurchaseTagDto> Tags { get; set; }
+    public List<TagDto> Tags { get; set; }
 }
