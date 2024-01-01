@@ -6,34 +6,34 @@ using Venus.Dto.Accounting;
 
 namespace Venus.Controllers;
 
-[Route("api/tags")]
+[Route("api/budgets")]
 [ApiController]
-public class TagController : ControllerBase
+public class BudgetController : ControllerBase
 {
-    private readonly ITagService _tagService;
-    private readonly ILogger<TagController> _logger;
+    private readonly IBudgetService _budgetService;
+    private readonly ILogger<BudgetController> _logger;
 
-    public TagController(
-        ITagService tagService, 
-        ILogger<TagController> logger)
+    public BudgetController(
+        IBudgetService budgetService, 
+        ILogger<BudgetController> logger)
     {
-        _tagService = tagService;
+        _budgetService = budgetService;
         _logger = logger;
     }
     
     /// <summary>
-    /// Creates a new tag
+    /// Creates a new Budget
     /// </summary>
-    /// <returns>Created tag</returns>
+    /// <returns>Created budget</returns>
     [HttpPost]
-    public async Task<ActionResult> CreateTag([FromBody] DraftTagDto tag)
+    public async Task<ActionResult> CreateBudget([FromBody] CreateBudgetDto budget)
     {
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _tagService.CreateTag(userId, tag);
+            var res = await _budgetService.CreateBudget(userId, budget);
             return Ok(res);
         }
         catch (Exception e)
@@ -47,18 +47,18 @@ public class TagController : ControllerBase
     }
     
     /// <summary>
-    /// Updates the tag 
+    /// Updates the Budget 
     /// </summary>
-    /// <returns>Updated tag</returns>
+    /// <returns>Updated Budget</returns>
     [HttpPut("{id:int}")]
-    public async Task<ActionResult> UpdateTag(int id, [FromBody] DraftTagDto tag)
+    public async Task<ActionResult> UpdateBudget(int id, [FromBody] CreateBudgetDto budget)
     {
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _tagService.UpdateTag(id, tag);
+            var res = await _budgetService.UpdateBudget(id, budget);
             return Ok(res);
         }
         catch (Exception e)
@@ -72,18 +72,18 @@ public class TagController : ControllerBase
     }
     
     /// <summary>
-    /// Gets all user tags
+    /// Gets all user Budgets
     /// </summary>
-    /// <returns>Tag list</returns>
+    /// <returns>Budget list</returns>
     [HttpGet]
-    public async Task<ActionResult> GetTags()
+    public async Task<ActionResult> GetBudgets()
     {
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _tagService.GetTags(userId);
+            var res = await _budgetService.GetBudgets(userId);
             return Ok(res);
         }
         catch (Exception e)
@@ -97,18 +97,18 @@ public class TagController : ControllerBase
     }
     
     /// <summary>
-    /// Deletes the tag 
+    /// Deletes the Budget 
     /// </summary>
-    /// <returns>Tag list</returns>
+    /// <returns>Budget list</returns>
     [HttpDelete("{id:int}")]
-    public async Task<ActionResult> DeleteTag(int id)
+    public async Task<ActionResult> DeleteBudget(int id)
     {
         try
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            await _tagService.DeleteTag(id);
+            await _budgetService.DeleteBudget(id);
             return Ok();
         }
         catch (Exception e)
