@@ -22,16 +22,27 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
+// SERVICES 
 builder.Services.AddSingleton<IChallengeService, ChallengeService>();
 builder.Services.AddSingleton<IChallengeDayService, ChallengeDayService>();
 builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
+builder.Services.AddSingleton<ITagService, TagService>();
 
+// REPOSITORIES 
+builder.Services.AddSingleton<IChallengeRepo, ChallengeRepo>();
+builder.Services.AddSingleton<IChallengeDayRepo, ChallengeDayRepo>();
+builder.Services.AddSingleton<IPurchaseRepo, PurchaseRepo>();
+builder.Services.AddSingleton<ITagRepo, TagRepo>();
 
+// MAPPING PROFILES
 builder.Services.AddAutoMapper(
-    typeof(ChallengeProfile)
+    typeof(ChallengeProfile),
+    typeof(PurchaseProfile),
+    typeof(TagProfile)
 );
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSingleton<KratosService>();
 builder.Services
@@ -39,12 +50,6 @@ builder.Services
     .AddScheme<KratosAuthenticationOptions, KratosAuthHandler>("Kratos", null);
 
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IChallengeService, ChallengeService>();
-builder.Services.AddSingleton<IChallengeDayService, ChallengeDayService>();
-builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
-builder.Services.AddSingleton<IChallengeRepo, ChallengeRepo>();
-builder.Services.AddSingleton<IChallengeDayRepo, ChallengeDayRepo>();
-builder.Services.AddSingleton<IPurchaseRepo, PurchaseRepo>();
 
 var app = builder.Build();
 
