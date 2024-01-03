@@ -1,4 +1,3 @@
-using System.Data;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Venus.Database.Contracts;
@@ -32,7 +31,7 @@ public class TagRepo : BaseRepository, ITagRepo
     {
         await using var conn = Connection();
 
-        var sql = $"UPDATE tag SET name = @name WHERE id = @tagId";
+        var sql = $"UPDATE tag SET name = @name WHERE id = @tagId returning id, name";
 
         var result = await conn.QuerySingleAsync<TagModel>(sql, new
         {
