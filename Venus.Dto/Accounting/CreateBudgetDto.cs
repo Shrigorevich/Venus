@@ -9,7 +9,7 @@ public class CreateBudgetDto : BudgetDto
     /// Currency identifier
     /// </summary>
     /// <example>1</example>
-    public required string CurrencyId { get; set; }
+    public required int CurrencyId { get; set; }
     
     /// <summary>
     /// Tags linked to the budget

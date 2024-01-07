@@ -3,23 +3,18 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Venus.Common;
 using Venus.Domain;
+using Venus.Domain.Contracts;
 using Venus.Dto;
 
 namespace Venus.Controllers;
 
 [Route("api/challenges")]
 [ApiController]
-public class ChallengeController : ControllerBase
+public class ChallengeController(
+    ILogger<ChallengeController> logger,
+    IChallengeService challengeService)
+    : ControllerBase
 {
-    private readonly ILogger<ChallengeController> _logger;
-    private readonly IChallengeService _challengeService;
-    public ChallengeController(
-        ILogger<ChallengeController> logger,
-        IChallengeService challengeService)
-    {
-        _logger = logger;
-        _challengeService = challengeService;
-    }
     /// <summary>
     /// Gets list of user`s challenges
     /// </summary>
@@ -33,12 +28,12 @@ public class ChallengeController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var challenges = await _challengeService.GetChallenges(userId);
+            var challenges = await challengeService.GetChallenges(userId);
             return Ok(challenges);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
@@ -68,16 +63,15 @@ public class ChallengeController : ControllerBase
                 return BadRequest("StartDate can`t be equal to EndDate");
             }
             
-            // var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            var userId = "a6f5e018-d919-4962-b50e-dccacdf9ae3f";
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var createdChallenge = await _challengeService.CreateChallenge(userId, challenge);
+            var createdChallenge = await challengeService.CreateChallenge(userId, challenge);
             return Ok(createdChallenge);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }
@@ -92,12 +86,12 @@ public class ChallengeController : ControllerBase
     {
         try
         {
-            await _challengeService.UpdateChallengeStatus(id, status);
+            await challengeService.UpdateChallengeStatus(id, status);
             return Ok();
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500);
         }
     }

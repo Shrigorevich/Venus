@@ -1,0 +1,42 @@
+using Dapper;
+using Microsoft.Extensions.Configuration;
+using Venus.Database.Contracts;
+using Venus.Database.Models;
+using Venus.Database.Queries;
+using Venus.Dto.Accounting;
+
+namespace Venus.Database;
+
+public class BudgetRepo(IConfiguration configuration) : BaseRepository(configuration), IBudgetRepo
+{
+    public async Task<BudgetModel> CreateBudget(string userId, CreateBudgetDto budget)
+    {
+        await using var conn = Connection();
+        
+        var result = await conn.QuerySingleAsync<BudgetModel>(BudgetQueries.CreateBudget(), new {
+            userId,
+            name = budget.Name,
+            amount = budget.PlannedAmount,
+            period = (int) budget.Period,
+            currencyId = budget.CurrencyId,
+            tagIds = budget.TagIds
+        });
+        
+        return result;
+    }
+
+    public Task<BudgetModel> UpdateBudget(int budgetId, CreateBudgetDto budget)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<BudgetModel>> GetBudgets(string userId)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteBudget(int budgetId)
+    {
+        throw new NotImplementedException();
+    }
+}

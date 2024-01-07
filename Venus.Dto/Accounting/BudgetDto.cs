@@ -14,10 +14,10 @@ public class BudgetDto
     public required string Name { get; set; }
 
     /// <summary>
-    /// Budget amount
+    /// Budget planned amount
     /// </summary>
     /// <example>4000</example>
-    public decimal Amount { get; set; }
+    public decimal PlannedAmount { get; set; }
 
     /// <summary>
     /// Budget period

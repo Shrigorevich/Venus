@@ -2,6 +2,7 @@ using AutoMapper;
 using Venus.Common;
 using Venus.Database.Contracts;
 using Venus.Database.Models;
+using Venus.Domain.Contracts;
 using Venus.Dto;
 
 namespace Venus.Domain;

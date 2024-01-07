@@ -1,7 +1,7 @@
 using Venus.Common;
 using Venus.Dto;
 
-namespace Venus.Domain;
+namespace Venus.Domain.Contracts;
 
 public interface IChallengeDayService
 {

@@ -1,6 +1,6 @@
 using Venus.Dto.Accounting;
 
-namespace Venus.Domain;
+namespace Venus.Domain.Contracts;
 
 public interface IBudgetService
 {

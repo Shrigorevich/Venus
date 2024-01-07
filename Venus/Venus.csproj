@@ -18,6 +18,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Venus.Database\Venus.Database.csproj" />
+      <ProjectReference Include="..\Venus.Domain.Contracts\Venus.Domain.Contracts.csproj" />
       <ProjectReference Include="..\Venus.Domain.Mapping\Venus.Domain.Mapping.csproj" />
       <ProjectReference Include="..\Venus.Domain\Venus.Domain.csproj" />
       <ProjectReference Include="..\Venus.Dto\Venus.Dto.csproj" />

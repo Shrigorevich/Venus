@@ -1,26 +1,18 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Venus.Common;
-using Venus.Domain;
+using Venus.Domain.Contracts;
 using Venus.Dto.Accounting;
 
 namespace Venus.Controllers;
 
 [Route("api/budgets")]
 [ApiController]
-public class BudgetController : ControllerBase
+public class BudgetController(
+    IBudgetService budgetService,
+    ILogger<BudgetController> logger)
+    : ControllerBase
 {
-    private readonly IBudgetService _budgetService;
-    private readonly ILogger<BudgetController> _logger;
-
-    public BudgetController(
-        IBudgetService budgetService, 
-        ILogger<BudgetController> logger)
-    {
-        _budgetService = budgetService;
-        _logger = logger;
-    }
-    
     /// <summary>
     /// Creates a new Budget
     /// </summary>
@@ -32,13 +24,13 @@ public class BudgetController : ControllerBase
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            
-            var res = await _budgetService.CreateBudget(userId, budget);
+
+            var res = await budgetService.CreateBudget(userId, budget);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -58,12 +50,12 @@ public class BudgetController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _budgetService.UpdateBudget(id, budget);
+            var res = await budgetService.UpdateBudget(id, budget);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -83,12 +75,12 @@ public class BudgetController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _budgetService.GetBudgets(userId);
+            var res = await budgetService.GetBudgets(userId);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -108,12 +100,12 @@ public class BudgetController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            await _budgetService.DeleteBudget(id);
+            await budgetService.DeleteBudget(id);
             return Ok();
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message

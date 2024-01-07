@@ -1,26 +1,17 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Venus.Common;
-using Venus.Domain;
+using Venus.Domain.Contracts;
 using Venus.Dto.Accounting;
 
 namespace Venus.Controllers;
 
 [Route("api/tags")]
 [ApiController]
-public class TagController : ControllerBase
+public class TagController(
+    ITagService tagService,
+    ILogger<TagController> logger) : ControllerBase
 {
-    private readonly ITagService _tagService;
-    private readonly ILogger<TagController> _logger;
-
-    public TagController(
-        ITagService tagService, 
-        ILogger<TagController> logger)
-    {
-        _tagService = tagService;
-        _logger = logger;
-    }
-    
     /// <summary>
     /// Creates a new tag
     /// </summary>
@@ -33,12 +24,12 @@ public class TagController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _tagService.CreateTag(userId, tag);
+            var res = await tagService.CreateTag(userId, tag);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -58,12 +49,12 @@ public class TagController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _tagService.UpdateTag(id, tag);
+            var res = await tagService.UpdateTag(id, tag);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -83,12 +74,12 @@ public class TagController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var res = await _tagService.GetTags(userId);
+            var res = await tagService.GetTags(userId);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -108,12 +99,12 @@ public class TagController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            await _tagService.DeleteTag(id);
+            await tagService.DeleteTag(id);
             return Ok();
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message

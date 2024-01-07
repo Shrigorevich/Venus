@@ -2,6 +2,7 @@ using Venus.Authorization;
 using Venus.Database;
 using Venus.Database.Contracts;
 using Venus.Domain;
+using Venus.Domain.Contracts;
 using Venus.Domain.Mapping;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,18 +28,21 @@ builder.Services.AddSingleton<IChallengeService, ChallengeService>();
 builder.Services.AddSingleton<IChallengeDayService, ChallengeDayService>();
 builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
 builder.Services.AddSingleton<ITagService, TagService>();
+builder.Services.AddSingleton<IBudgetService, BudgetService>();
 
 // REPOSITORIES 
 builder.Services.AddSingleton<IChallengeRepo, ChallengeRepo>();
 builder.Services.AddSingleton<IChallengeDayRepo, ChallengeDayRepo>();
 builder.Services.AddSingleton<IPurchaseRepo, PurchaseRepo>();
 builder.Services.AddSingleton<ITagRepo, TagRepo>();
+builder.Services.AddSingleton<IBudgetRepo, BudgetRepo>();
 
 // MAPPING PROFILES
 builder.Services.AddAutoMapper(
     typeof(ChallengeProfile),
     typeof(PurchaseProfile),
-    typeof(TagProfile)
+    typeof(TagProfile),
+    typeof(BudgetProfile)
 );
 
 builder.Services.AddControllers();

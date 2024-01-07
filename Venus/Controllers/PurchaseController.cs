@@ -2,25 +2,18 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Venus.Common;
 using Venus.Domain;
+using Venus.Domain.Contracts;
 using Venus.Dto.Accounting;
 
 namespace Venus.Controllers;
 
 [Route("api/purchases")]
 [ApiController]
-public class PurchaseController : ControllerBase
+public class PurchaseController(
+    IPurchaseService purchaseService,
+    ILogger<PurchaseController> logger)
+    : ControllerBase
 {
-    private readonly IPurchaseService _purchaseService;
-    private readonly ILogger<PurchaseController> _logger;
-
-    public PurchaseController(
-        IPurchaseService purchaseService, 
-        ILogger<PurchaseController> logger)
-    {
-        _purchaseService = purchaseService;
-        _logger = logger;
-    }
-    
     /// <summary>
     /// Creates new purchase 
     /// </summary>
@@ -36,14 +29,14 @@ public class PurchaseController : ControllerBase
                 return BadRequest("Wrong date format. Please use ISO format (2023-10-05T14:48:00.000Z)");
             
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            // if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            userId = "test_user";
-            var createdPurchase = await _purchaseService.CreatePurchase(userId, purchase);
+            if (string.IsNullOrEmpty(userId)) return Unauthorized();
+
+            var createdPurchase = await purchaseService.CreatePurchase(userId, purchase);
             return Ok(createdPurchase);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -64,12 +57,12 @@ public class PurchaseController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             // if (string.IsNullOrEmpty(userId)) return Unauthorized();
             userId = "test_user";
-            var createdPurchase = await _purchaseService.UpdatePurchase(userId, id, purchase);
+            var createdPurchase = await purchaseService.UpdatePurchase(userId, id, purchase);
             return Ok(createdPurchase);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -90,12 +83,12 @@ public class PurchaseController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
             
-            var purchases = await _purchaseService.GetPurchases(userId);
+            var purchases = await purchaseService.GetPurchases(userId);
             return Ok(purchases);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -116,12 +109,12 @@ public class PurchaseController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            await _purchaseService.DeletePurchase(userId, id);
+            await purchaseService.DeletePurchase(userId, id);
             return Ok();
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -142,12 +135,12 @@ public class PurchaseController : ControllerBase
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
 
-            await _purchaseService.UpdatePurchaseTags(id, tagIds);
+            await purchaseService.UpdatePurchaseTags(id, tagIds);
             return Ok();
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
@@ -165,12 +158,12 @@ public class PurchaseController : ControllerBase
     {
         try
         {
-            var res = await _purchaseService.GetPurchases(userId);
+            var res = await purchaseService.GetPurchases(userId);
             return Ok(res);
         }
         catch (Exception e)
         {
-            _logger.LogError("Something went wrong. Error: {0}", e);
+            logger.LogError("Something went wrong. Error: {0}", e);
             return StatusCode(500, new ErrorObject
             {
                 Message = e.Message
