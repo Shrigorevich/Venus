@@ -30,9 +30,15 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
         throw new NotImplementedException();
     }
 
-    public Task<List<BudgetModel>> GetBudgets(string userId)
+    public async Task<List<BudgetModel>> GetBudgets(string userId)
     {
-        throw new NotImplementedException();
+        await using var conn = Connection();
+        
+        var result = await conn.QueryAsync<BudgetModel>(BudgetQueries.GetBudgets(), new {
+            userId
+        });
+        
+        return result.ToList();
     }
 
     public Task DeleteBudget(int budgetId)

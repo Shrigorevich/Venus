@@ -19,9 +19,10 @@ public class BudgetService(IBudgetRepo repo, IMapper mapper) : IBudgetService
         throw new NotImplementedException();
     }
 
-    public Task<List<BudgetViewDto>> GetBudgets(string userId)
+    public async Task<List<BudgetViewDto>> GetBudgets(string userId)
     {
-        throw new NotImplementedException();
+        var result = await repo.GetBudgets(userId);
+        return mapper.Map<List<BudgetModel>, List<BudgetViewDto>>(result);
     }
 
     public Task DeleteBudget(int budgetId)

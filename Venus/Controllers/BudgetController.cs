@@ -74,7 +74,7 @@ public class BudgetController(
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId)) return Unauthorized();
-            
+
             var res = await budgetService.GetBudgets(userId);
             return Ok(res);
         }
