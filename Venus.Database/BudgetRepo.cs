@@ -41,8 +41,13 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
         return result.ToList();
     }
 
-    public Task DeleteBudget(int budgetId)
+    public async Task DeleteBudget(int budgetId)
     {
-        throw new NotImplementedException();
+        await using var conn = Connection();
+        
+        await conn.ExecuteAsync("DELETE FROM budget WHERE id = @budgetId", new
+        { 
+            budgetId
+        });
     }
 }

@@ -25,8 +25,8 @@ public class BudgetService(IBudgetRepo repo, IMapper mapper) : IBudgetService
         return mapper.Map<List<BudgetModel>, List<BudgetViewDto>>(result);
     }
 
-    public Task DeleteBudget(int budgetId)
+    public async Task DeleteBudget(int budgetId)
     {
-        throw new NotImplementedException();
+        await repo.DeleteBudget(budgetId);
     }
 }
