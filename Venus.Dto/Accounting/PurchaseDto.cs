@@ -36,11 +36,11 @@ public class PurchaseDto
     /// Unit measurement (kg, g, L, etc.)
     /// </summary>
     /// <example>L</example>
-    public string? Unit { get; set; }
+    public int UnitId { get; set; }
     
     /// <summary>
     /// Currency code (USD, UAH, EUR etc.)
     /// </summary>
     /// <example>UAH</example>
-    public string Currency { get; set; }
+    public int CurrencyId { get; set; }
 }

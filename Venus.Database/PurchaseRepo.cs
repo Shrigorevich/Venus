@@ -17,16 +17,16 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
     {
         await using var conn = Connection();
 
-        var sql = $"SELECT * from create_purchase(@user_id, '{purchase.Date}', @name, @price, @currency, @tag_ids, @discount, @unit, @quantity, @description)";
+        var sql = $"SELECT * from create_purchase(@user_id, '{purchase.Date}', @name, @price, @currency_id, @tag_ids, @discount, @unit_id, @quantity, @description)";
         
         var parameter = new DynamicParameters();
         parameter.Add("@user_id", userId, DbType.StringFixedLength);
         parameter.Add("@name", purchase.Name, DbType.StringFixedLength);
         parameter.Add("@price", purchase.Price, DbType.Decimal);
-        parameter.Add("@currency", purchase.Currency, DbType.StringFixedLength);
+        parameter.Add("@currency_id", purchase.CurrencyId, DbType.Int32);
         parameter.Add("@tag_ids", purchase.TagIds, DbType.Object);
         parameter.Add("@discount", purchase.Discount, DbType.Decimal);
-        parameter.Add("@unit", purchase.Unit, DbType.StringFixedLength);
+        parameter.Add("@unit_id", purchase.UnitId, DbType.Int32);
         parameter.Add("@quantity", purchase.Quantity, DbType.Decimal);
         parameter.Add("@description", purchase.Description, DbType.StringFixedLength);
 
@@ -39,16 +39,16 @@ public class PurchaseRepo : BaseRepository, IPurchaseRepo
     {
         await using var conn = Connection();
 
-        var sql = $"SELECT * from update_purchase(@userId, @purchaseId, '{purchase.Date}', @name, @price, @currency, @discount, @unit, @quantity, @description)";
+        var sql = $"SELECT * from update_purchase(@userId, @purchaseId, '{purchase.Date}', @name, @price, @currency_id, @discount, @unit_id, @quantity, @description)";
         
         var parameter = new DynamicParameters();
         parameter.Add("@userId", userId, DbType.StringFixedLength);
         parameter.Add("@purchaseId", purchaseId, DbType.Guid);
         parameter.Add("@name", purchase.Name, DbType.StringFixedLength);
         parameter.Add("@price", purchase.Price, DbType.Decimal);
-        parameter.Add("@currency", purchase.Currency, DbType.StringFixedLength);
+        parameter.Add("@currency_id", purchase.CurrencyId, DbType.Int32);
         parameter.Add("@discount", purchase.Discount, DbType.Decimal);
-        parameter.Add("@unit", purchase.Unit, DbType.StringFixedLength);
+        parameter.Add("@unit_id", purchase.UnitId, DbType.Int32);
         parameter.Add("@quantity", purchase.Quantity, DbType.Decimal);
         parameter.Add("@description", purchase.Description, DbType.StringFixedLength);
 
