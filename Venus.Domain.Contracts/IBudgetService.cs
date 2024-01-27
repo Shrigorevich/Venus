@@ -6,9 +6,9 @@ public interface IBudgetService
 {
     Task<BudgetViewDto> CreateBudget(string userId, CreateBudgetDto budget);
 
-    Task<BudgetViewDto> UpdateBudget(int budgetId, CreateBudgetDto budget);
+    Task<BudgetViewDto> UpdateBudget(string userId, Guid budgetId, CreateBudgetDto budget);
 
     Task<List<BudgetViewDto>> GetBudgets(string userId);
     
-    Task DeleteBudget(int budgetId);
+    Task DeleteBudget(Guid budgetId);
 }

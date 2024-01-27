@@ -53,7 +53,6 @@ public static class DateTimeExtension
     
     private static string StartOfQuarter(this DateTime date)
     {
-        date = date.AddMonths(11);
         var currQuarter = (date.Month - 1) / 3 + 1;
         var qStart = new DateTime(date.Year, 3 * currQuarter - 2, 1);
         return DateOnly.FromDateTime(qStart).ToString("o");
@@ -61,7 +60,6 @@ public static class DateTimeExtension
     
     private static string EndOfQuarter(this DateTime date)
     {
-        date = date.AddMonths(11);
         var currQuarter = (date.Month - 1) / 3 + 1;
         var qLast = new DateTime(date.Year, 3 * currQuarter, 1).AddMonths(1).AddDays(-1);
         return DateOnly.FromDateTime(qLast).ToString("o");

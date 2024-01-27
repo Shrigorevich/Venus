@@ -7,9 +7,9 @@ public interface IBudgetRepo
 {
     Task<BudgetModel> CreateBudget(string userId, CreateBudgetDto budget);
 
-    Task<BudgetModel> UpdateBudget(int budgetId, CreateBudgetDto budget);
+    Task<BudgetModel> UpdateBudget(string userId, Guid budgetId, CreateBudgetDto budget);
 
     Task<List<BudgetModel>> GetBudgets(string userId);
     
-    Task DeleteBudget(int budgetId);
+    Task DeleteBudget(Guid budgetId);
 }

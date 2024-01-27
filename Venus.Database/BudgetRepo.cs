@@ -1,5 +1,8 @@
+using System.Globalization;
 using Dapper;
 using Microsoft.Extensions.Configuration;
+using Venus.Common;
+using Venus.Common.Extentions;
 using Venus.Database.Contracts;
 using Venus.Database.Models;
 using Venus.Database.Queries;
@@ -13,21 +16,45 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
     {
         await using var conn = Connection();
         
+        var ci = new CultureInfo("uk");
+        var start = DateTime.Now.PeriodStart(ci, budget.Period);
+        var end = DateTime.Now.PeriodEnd(ci, budget.Period);
+        
         var result = await conn.QuerySingleAsync<BudgetModel>(BudgetQueries.CreateBudget(), new {
             userId,
+            start,
+            end,
             name = budget.Name,
             amount = budget.PlannedAmount,
             period = (int) budget.Period,
             currencyId = budget.CurrencyId,
-            tagIds = budget.TagIds
+            tagIds = budget.TagIds,
         });
         
         return result;
     }
 
-    public Task<BudgetModel> UpdateBudget(int budgetId, CreateBudgetDto budget)
+    public async Task<BudgetModel> UpdateBudget(string userId, Guid budgetId, CreateBudgetDto budget)
     {
-        throw new NotImplementedException();
+        await using var conn = Connection();
+        
+        var ci = new CultureInfo("uk");
+        var start = DateTime.Now.PeriodStart(ci, budget.Period);
+        var end = DateTime.Now.PeriodEnd(ci, budget.Period);
+        
+        var result = await conn.QuerySingleAsync<BudgetModel>(BudgetQueries.CreateBudget(), new {
+            userId,
+            start,
+            end,
+            id = budgetId,
+            name = budget.Name,
+            amount = budget.PlannedAmount,
+            period = (int) budget.Period,
+            currencyId = budget.CurrencyId,
+            tagIds = budget.TagIds,
+        });
+        
+        return result;
     }
 
     public async Task<List<BudgetModel>> GetBudgets(string userId)
@@ -41,7 +68,7 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
         return result.ToList();
     }
 
-    public async Task DeleteBudget(int budgetId)
+    public async Task DeleteBudget(Guid budgetId)
     {
         await using var conn = Connection();
         
