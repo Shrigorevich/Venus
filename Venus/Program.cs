@@ -29,6 +29,7 @@ builder.Services.AddSingleton<IChallengeDayService, ChallengeDayService>();
 builder.Services.AddSingleton<IPurchaseService, PurchaseService>();
 builder.Services.AddSingleton<ITagService, TagService>();
 builder.Services.AddSingleton<IBudgetService, BudgetService>();
+builder.Services.AddSingleton<IConfigurationService, ConfigurationService>();
 
 // REPOSITORIES 
 builder.Services.AddSingleton<IChallengeRepo, ChallengeRepo>();
@@ -36,6 +37,7 @@ builder.Services.AddSingleton<IChallengeDayRepo, ChallengeDayRepo>();
 builder.Services.AddSingleton<IPurchaseRepo, PurchaseRepo>();
 builder.Services.AddSingleton<ITagRepo, TagRepo>();
 builder.Services.AddSingleton<IBudgetRepo, BudgetRepo>();
+builder.Services.AddSingleton<IConfigurationRepo, ConfigurationRepo>();
 
 // MAPPING PROFILES
 builder.Services.AddAutoMapper(
