@@ -1,16 +1,14 @@
-using System.Globalization;
-
-namespace Venus.Common.Extentions;
+namespace Venus.Common.Extensions;
 
 public static class DateTimeExtension
 {
 
-    public static string PeriodStart(this DateTime date, CultureInfo ci, BudgetPeriod p)
+    public static string PeriodStart(this DateTime date, BudgetPeriod p)
     {
         switch (p)
         {
             case BudgetPeriod.Week:
-                return date.StartOfWeek(ci);
+                return date.StartOfWeek();
             case BudgetPeriod.Month:
                 return date.StartOfMonth();
             case BudgetPeriod.Quarter:
@@ -22,12 +20,12 @@ public static class DateTimeExtension
         }
     }
     
-    public static string PeriodEnd(this DateTime date, CultureInfo ci, BudgetPeriod p)
+    public static string PeriodEnd(this DateTime date, BudgetPeriod p)
     {
         switch (p)
         {
             case BudgetPeriod.Week:
-                return date.EndOfWeek(ci);
+                return date.EndOfWeek();
             case BudgetPeriod.Month:
                 return date.EndOfMonth();
             case BudgetPeriod.Quarter:
@@ -77,17 +75,13 @@ public static class DateTimeExtension
         return DateOnly.FromDateTime(yearStart).ToString("o");
     } 
     
-    private static string StartOfWeek(this DateTime date, CultureInfo ci)
+    private static string StartOfWeek(this DateTime date)
     {
-        var start = ci.DateTimeFormat.FirstDayOfWeek;
-        var today = date.DayOfWeek;
-        return DateOnly.FromDateTime(DateTime.Now.AddDays(-(today - start))).ToString("o");
+        return DateOnly.FromDateTime(DateTime.Now.AddDays(-(int)date.DayOfWeek)).ToString("o");
     }
     
-    private static string EndOfWeek(this DateTime date, CultureInfo ci)
+    private static string EndOfWeek(this DateTime date)
     {
-        var start = ci.DateTimeFormat.FirstDayOfWeek;
-        var today = date.DayOfWeek;
-        return DateOnly.FromDateTime(DateTime.Now.AddDays(-(today - start) + 6)).ToString("o");
+        return DateOnly.FromDateTime(DateTime.Now.AddDays(-(int)date.DayOfWeek + 6)).ToString("o");
     }
 }

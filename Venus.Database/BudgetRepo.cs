@@ -2,7 +2,7 @@ using System.Globalization;
 using Dapper;
 using Microsoft.Extensions.Configuration;
 using Venus.Common;
-using Venus.Common.Extentions;
+using Venus.Common.Extensions;
 using Venus.Database.Contracts;
 using Venus.Database.Models;
 using Venus.Database.Queries;
@@ -16,9 +16,8 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
     {
         await using var conn = Connection();
         
-        var ci = new CultureInfo("uk");
-        var start = DateTime.Now.PeriodStart(ci, budget.Period);
-        var end = DateTime.Now.PeriodEnd(ci, budget.Period);
+        var start = DateTime.Now.PeriodStart(budget.Period);
+        var end = DateTime.Now.PeriodEnd(budget.Period);
         
         var result = await conn.QuerySingleAsync<BudgetModel>(BudgetQueries.CreateBudget(), new {
             userId,
@@ -38,11 +37,10 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
     {
         await using var conn = Connection();
         
-        var ci = new CultureInfo("uk");
-        var start = DateTime.Now.PeriodStart(ci, budget.Period);
-        var end = DateTime.Now.PeriodEnd(ci, budget.Period);
+        var start = DateTime.Now.PeriodStart(budget.Period);
+        var end = DateTime.Now.PeriodEnd(budget.Period);
         
-        var result = await conn.QuerySingleAsync<BudgetModel>(BudgetQueries.CreateBudget(), new {
+        var result = await conn.QuerySingleAsync<BudgetModel>(BudgetQueries.UpdateBudget(), new {
             userId,
             start,
             end,
@@ -60,9 +58,21 @@ public class BudgetRepo(IConfiguration configuration) : BaseRepository(configura
     public async Task<List<BudgetModel>> GetBudgets(string userId)
     {
         await using var conn = Connection();
+
+        var startDates = new string[4];
+        var endDates = new string[4];
+        var index = 0;
+        foreach (BudgetPeriod p in Enum.GetValues(typeof(BudgetPeriod)))
+        {
+            startDates.SetValue(DateTime.Now.PeriodStart(p), index);
+            endDates.SetValue(DateTime.Now.PeriodEnd(p), index);
+            index++;
+        }
         
         var result = await conn.QueryAsync<BudgetModel>(BudgetQueries.GetBudgets(), new {
-            userId
+            userId,
+            startDates,
+            endDates
         });
         
         return result.ToList();
